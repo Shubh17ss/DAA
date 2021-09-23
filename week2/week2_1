@@ -1,1 +1,61 @@
 
+import java.util.*;
+class week2_1
+{
+    static boolean binarySearch(int []arr,int l,int h,int key)
+    {
+     
+        if(l>h)
+        return false;
+        else 
+        {
+        int mid=l+(h-l)/2;
+        if(arr[mid]==key)
+        {  
+            int count=1;
+            int i=mid+1;
+            while(arr[i]==key)
+            {
+                count++;
+                i=i+1;
+            }
+            int j=mid-1;
+            while(arr[j]==key)
+            {
+                count++;
+                j=j-1;
+            }
+            System.out.println(key+" "+count);
+            return true;
+        }
+        else if(arr[mid]<key)
+        binarySearch(arr,mid+1,h,key);
+        else if(arr[mid]>key)
+        binarySearch(arr,l,mid-1,key);
+        }
+   
+    return false;
+    }
+    
+    
+    
+    public static void main(String args[])
+    {
+        Scanner Sc=new Scanner(System.in);
+        int n=Sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++)
+        {
+            arr[i]=Sc.nextInt();
+       }
+       System.out.println("Enter the key element");
+       int key=Sc.nextInt();
+       int l=0;
+       int h=n-1;
+      
+       if( binarySearch(arr,l,h,key)==true)
+       System.out.println();
+       else 
+       System.out.println("\nNOT PRESENT");
+    }
+}
