@@ -1,0 +1,73 @@
+//SOLVING THIS QUESTION USIGN ADJACENCY MATRIX
+import java.util.*;
+public class floydwarshal {
+        public static void main(String args[])
+        {
+            Scanner Sc=new Scanner(System.in);
+            System.out.println("Enter the number of vertices in the graph");
+            int vertices=Sc.nextInt();
+            int arr[][]=new int[vertices][vertices];
+            //input
+            System.out.println("Enter the weight of the path as input");
+            
+            System.out.println("Enter -1 if there is no path");
+            for(int i=0;i<vertices;i++)
+            {
+                for(int j=0;j<vertices;j++)
+                {   
+                   
+                    if(i==j)
+                    arr[i][j]=0;
+                    else{
+                        System.out.println("Set path from vertex "+i+" to vertex "+j);
+                        int n=Sc.nextInt();
+                        if(n==-1)
+                        arr[i][j]=10000;
+                        else if(n!=-1)
+                        arr[i][j]=n;
+                    }
+                }
+            }
+            
+            /*for(int i=0;i<vertices;i++)
+            {
+                for(int j=0;j<vertices;j++)
+                {
+                    System.out.print(arr[i][j]+" ");
+                }
+                System.out.println();
+            }*/
+            System.out.println("\n\n\n");
+          
+            for(int i=0;i<vertices;i++)
+            {
+                for(int j=0;j<vertices;j++)
+                {
+                    if(j==i)
+                    continue;
+                    for(int k=0;k<vertices;k++)
+                    {
+                        if(k==i)
+                        continue;
+                        else{
+                            if(k==j)
+                            continue;
+                            else if(k!=j)
+                            {
+                                arr[j][k]=Math.min(arr[j][k],arr[j][i]+arr[i][k]); 
+                            }
+                        }
+                    }
+                }
+            }
+
+            for(int i=0;i<vertices;i++)
+            {
+                for(int j=0;j<vertices;j++)
+                {
+                    System.out.print(arr[i][j]+" ");
+                }
+                System.out.println();
+            }
+        }
+}
