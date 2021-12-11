@@ -1,0 +1,61 @@
+import java.util.*;
+public class activityselection{
+
+    public static void main(String args[])
+    {
+        Scanner Sc=new Scanner(System.in);
+        System.out.println("Enter the number of activities");
+        int n=Sc.nextInt();
+        String activity[]=new String[n];
+        System.out.println("Enter the names of the activity");
+        for(int i=0;i<n;i++)
+        {
+            activity[i]=Sc.next();
+        }
+        System.out.println("\n");
+        int art[]=new int[n];
+        int end[]=new int[n];
+        System.out.println("Enter the start time and end time of the specified activities");
+        for(int i=0;i<n;i++)
+        {
+            System.out.print(activity[i]+":");    
+            art[i]=Sc.nextInt();
+            end[i]=Sc.nextInt();
+        }
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i+1;j<n;j++)
+            {
+                if(end[j-1]>end[j])
+                {
+                    int temp=end[j];
+                    end[j]=end[j-1];
+                    end[j-1]=temp;
+                    temp=art[j];
+                    art[j]=art[j-1];
+                    art[j-1]=temp;
+                    String temp2;
+                    temp2=activity[j];
+                    activity[j]=activity[j-1];
+                    activity[j-1]=temp2;
+                }
+            }
+        }
+        ArrayList<String> arl=new ArrayList<>();
+        int count=1;
+        arl.add(activity[0]);
+        int val=0;
+        for(int i=1;i<n;i++)
+        {
+            if(art[i]>=end[val])
+            {
+                count++;
+                arl.add(activity[i]);
+                val=i;
+            }
+        }
+        System.out.println("The number of activities selected are "+count);
+        System.out.println(arl);
+        
+    }
+}
