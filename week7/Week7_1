@@ -1,0 +1,79 @@
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class week7_1 {
+    static class Edge{
+        int src,nbr,wt;
+        Edge(int src,int nbr,int wt)
+        {
+            this.src=src;
+            this.nbr=nbr;
+            this.wt=wt;
+        }
+    }
+    static class pair implements Comparable<pair>
+    {
+        int vt,wt;
+        String psf;
+        pair(int vt,int wt,String psf){
+            this.vt=vt;
+            this.wt=wt;
+            this.psf=psf;
+        }
+        public int compareTo(pair o)
+        {
+            return this.wt-o.wt;
+        }
+    }
+    public static void main(String args[])
+    {
+        Scanner Sc=new Scanner(System.in);
+        System.out.println("Enter the number of vertices");
+        int vertices=Sc.nextInt();
+        ArrayList<Edge>[]graph=new ArrayList[vertices];
+        for(int i=0;i<vertices;i++)
+        {
+            graph[i]=new ArrayList<>();
+        }
+        System.out.println("Enter the number of edges");
+        int edges=Sc.nextInt();
+        System.out.println("Enter the connections of the graph");
+        for(int i=0;i<edges;i++)
+        {
+            int v1=Sc.nextInt();
+            int v2=Sc.nextInt();
+            int wt=Sc.nextInt();
+            graph[v1].add(new Edge(v1, v2, wt));
+            graph[v2].add(new Edge(v2, v1, wt));
+        }
+        boolean[] visited=new boolean[vertices];
+        System.out.println("Enter the source");
+        int src=Sc.nextInt();
+        PriorityQueue<pair> pq=new PriorityQueue<>();
+        String psf="";
+        pq.add(new pair(src, 0,psf));
+        while(pq.size()>0)
+        {
+          pair rem=pq.remove();
+          if(visited[rem.vt]==true)
+          continue;
+          else 
+          visited[rem.vt]=true;
+          if(rem.vt==src)
+          {
+              rem.psf=rem.psf+rem.vt;
+          }
+          else if(rem.vt!=src){
+          System.out.println(rem.vt+" from "+rem.psf+" @ "+rem.wt);
+          }
+          for(Edge e:graph[rem.vt])
+          {
+              pq.add(new pair(e.nbr,rem.wt+e.wt,rem.psf+e.nbr));
+          }
+        }
+        
+
+        
+    }
+}
