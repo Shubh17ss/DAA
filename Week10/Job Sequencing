@@ -1,0 +1,94 @@
+import java.util.*;
+public class jobSequencing {
+    
+    public static void main(String args[])
+    {
+        Scanner Sc=new Scanner(System.in);
+        int num;
+        System.out.println("Enter the number of jobs");
+        num=Sc.nextInt();
+        int job[]=new int[num];
+        System.out.println("Enter the job ids");
+        for(int i=0;i<num;i++)
+        {
+            job[i]=Sc.nextInt();
+        }
+        System.out.println("Enter the deadline and profit for the job id specified");
+        int dead[]=new int[num];
+        int profit[]=new int[num];
+        int maxdeadline=0;
+        for(int i=0;i<num;i++)
+        {
+            System.out.print(job[i]+" : ");
+            dead[i]=Sc.nextInt();
+            if(dead[i]>maxdeadline)
+            maxdeadline=dead[i];
+            profit[i]=Sc.nextInt();
+        }
+        int slot[]=new int[maxdeadline];
+        for(int i=0;i<maxdeadline;i++)
+        slot[i]=0;
+
+        for(int i=0;i<num;i++)
+        {
+            for(int j=0;j<num-i-1;j++)
+            {
+                if(profit[j+1]>profit[j])
+                {
+                    int temp=profit[j];
+                    profit[j]=profit[j+1];
+                    profit[j+1]=temp;
+                    temp=job[j];
+                    job[j]=job[j+1];
+                    job[j+1]=temp;
+                    temp=dead[j];
+                    dead[j]=dead[j+1];
+                    dead[j+1]=temp;
+                }
+            }
+        }
+        for(int i=0;i<num;i++)
+        System.out.println(job[i]+" "+dead[i]);
+
+        System.out.println("\n\n");
+       
+        int count=0;
+        ArrayList<Integer> arl=new ArrayList<>();
+        for(int i=0;i<num;i++)
+        {
+            int val=1;
+            while(val<=maxdeadline)
+            {
+                if(dead[i]>val)
+                {
+                    val++;
+                    continue;
+                }
+                else if(dead[i]<=val)
+                {
+                    if(slot[val-1]==0){
+                    slot[val-1]=job[i];
+                    arl.add(job[i]);
+                    count++;
+                    break;
+                 }
+                 else{
+                     for(int k=val-2;k>=0;k--)
+                     {
+                        if(slot[k]==0)
+                        {
+                            slot[k]=job[i];
+                            arl.add(job[i]);
+                            count++;
+                            break;
+                        }
+                     }
+                 }
+                break;
+                }
+            }
+        }
+        System.out.println("The number of jobs selected are "+count);
+        System.out.println(arl);
+    }
+}
