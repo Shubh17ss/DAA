@@ -1,0 +1,115 @@
+import java.util.*;
+public class KnapsackProblem {
+
+    public static void heapify(double []eff,double []obj, double []profit,double []weight,int n,int i)
+    {
+        int l=i*2+1;
+        int r=i*2+2;
+        int val=i;
+        if(l<n&&eff[l]>eff[i])
+        i=l;
+        if(r<n&&eff[r]>eff[i])
+        i=r;
+
+        if(val!=i)
+        {
+            double temp;
+            temp=eff[val];
+            eff[val]=eff[i];
+            eff[i]=temp;
+            temp=obj[val];
+            obj[val]=obj[i];
+            obj[i]=temp;
+            temp=profit[val];
+            profit[val]=profit[i];
+            profit[i]=temp;
+            temp=weight[val];
+            weight[val]=weight[i];
+            weight[i]=temp;
+            heapify(eff,obj,profit,weight,n,i);
+        }
+    }
+    public static void main(String args[])
+    {
+        Scanner Sc=new Scanner(System.in);
+        System.out.println("Enter the number of objects");
+        int n=Sc.nextInt();
+        double obj[]=new double[n];
+        double profit[]=new double[n];
+        double weight[]=new double[n];
+        System.out.println("Enter the Sno. along with profit and then the weight of the objects");
+        for(int i=0;i<n;i++)
+        {
+            obj[i]=Sc.nextFloat();
+            profit[i]=Sc.nextFloat();
+            weight[i]=Sc.nextFloat();
+        }
+        double eff[]=new double[n];
+        for(int i=0;i<n;i++)
+        {
+            eff[i]=(profit[i]*1.0)/weight[i];
+        }
+        for(int i=n/2;i>=0;i--)
+        {
+            heapify(eff, obj, profit, weight, n, i);
+        }
+   
+
+        ArrayList<Double> objl=new ArrayList<>();
+       ArrayList<Double> weightl=new ArrayList<>();
+        ArrayList<Double> profitl=new ArrayList<>();
+        
+        int c=0;
+        while(c<n)
+        {
+            objl.add(obj[0]);
+            weightl.add(weight[0]);
+            profitl.add(profit[0]);
+            double swap;
+            swap=eff[0];
+            eff[0]=eff[n-1-c];
+            eff[n-1-c]=swap;
+
+            swap=obj[0];
+            obj[0]=obj[n-1-c];
+            obj[n-1-c]=swap;
+
+            swap=profit[0];
+            profit[0]=profit[n-1-c];
+            profit[n-1-c]=swap;
+
+            swap=weight[0];
+            weight[0]=weight[n-1-c];
+            weight[n-1-c]=swap;
+
+            heapify(eff, obj, profit, weight, n-1-c,0);
+            c++;
+        }
+        
+       double capacity;
+       System.out.println("Enter the maximum carrying capacity of the Sack");
+       capacity=Sc.nextFloat();
+       int i=0;
+       ArrayList<Double> fin=new ArrayList<>();
+       while(capacity>0)
+        {
+            double temp=capacity-weightl.get(i);
+            if(temp>=0)
+            {
+                fin.add(objl.get(i));
+                i++;
+                capacity=temp;
+            }
+            else if(temp<0)
+            {
+                double value=(capacity/weightl.get(i));
+                fin.add(value);
+                capacity=0;
+            }
+        }
+        System.out.println("The final objects are");
+        System.out.println(fin);
+       
+
+    }
+}
